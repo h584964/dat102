@@ -32,7 +32,7 @@ public class DobbelKjedetOrdnetListe<T extends Comparable<T>> implements DobbelK
 	 * Returnerer referansen til noden hvis el fins, ellers returneres
 	 * null-referansen
 	 */
-	private DobbelNode<T> fins(T el) {
+	private DobbelNode<T> finn(T el) {
 		DobbelNode<T> aktuell = foerste.getNeste();
 		// TODO
       return null;

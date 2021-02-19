@@ -44,14 +44,16 @@ public class Bingokule {
 	public boolean equals(Object ny) {
 		if (this == ny) {
 			return true;
-		} else if (ny == null) {
-			return false;
-		} else if (getClass() != ny.getClass()) {
-			return false;
-		} else {
-			Bingokule b2 = (Bingokule) ny; // Nødvendig typekonvertering
-			return (tall == b2.tall && bokstav == b2.bokstav);
 		}
+		if (ny == null) {
+			return false;
+		}
+		if (getClass() != ny.getClass()) {
+			return false;
+		}
+
+		Bingokule b2 = (Bingokule) ny; // Nødvendig typekonvertering
+		return (tall == b2.tall && bokstav == b2.bokstav);
 	}
 
 	/**

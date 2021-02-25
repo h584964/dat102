@@ -7,6 +7,7 @@ import java.util.Random;
 import no.hvl.dat102.exception.EmptyCollectionException;
 import no.hvl.dat102.mengde.adt.MengdeADT;
 
+
 public class TabellMengde<T> implements MengdeADT<T> {
 	// ADT-en Mengde implementert som tabell
 	//
@@ -69,7 +70,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public T fjern(T element) {
-		//TODO
+		// TODO
 		// Søker etter og fjerner element. Returnerer null-ref ved ikke-funn
 
 		if (erTom())
@@ -77,9 +78,20 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 		boolean funnet = false;
 		T svar = null;
-		/*
-		 * 
-		 */
+		for (int i = 0; (i < antall && !funnet); i++) {
+			if (tab[i].equals(element)) {
+				svar = tab[i];
+				tab[i] = tab[antall - 1];
+				// tab[antall-1] = null;
+				antall--;
+				funnet = true;
+
+			} else { // Må vel ha else med??
+				funnet = false;
+			}
+
+		}
+
 		return svar;
 	}
 
@@ -93,7 +105,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		}
 		return (funnet);
 	}
-	
+
 	/*
 	 * Når vi overkjører (override) equals- meteoden er det anbefalt at vi også
 	 * overkjører hascode-metoden da en del biblioterker burker hascode sammen med
@@ -110,13 +122,23 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public boolean equals(Object m2) {
-		//TODO
+		// TODO
 		boolean likeMengder = true;
 		T element;
+		if (m2 instanceof TabellMengde) {
+			Iterator<T> m2It = ((TabellMengde<T>) m2).oppramser();
+			if (this.antall == ((TabellMengde<T>) m2).antall()) {
+				likeMengder = true;
+				while (m2It.hasNext()) {
+					element = m2It.next();
+					if (!this.inneholder(element)) {
+						likeMengder = false;
+					}
+				}
+			}
 
-		/*
-		 * ...
-		 */
+		}
+
 		return likeMengder;
 	}
 
@@ -139,14 +161,22 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	 */
 	@Override
 
-	public MengdeADT<T> union(MengdeADT<T> m2) {
-		//TODO
+	public MengdeADT<T> union(MengdeADT<T> m2) { // Litt usikker på denne
+		// TODO
 		MengdeADT<T> begge = new TabellMengde<T>();
 		T element = null;
-		/*
-		 * ...
-		 * 
-		 */
+		int i = 0;
+		while(tab[i] != null) {
+			((TabellMengde<T>)begge).settInn(tab[i]);
+			i++;
+		}
+		
+		Iterator<T> teller = m2.oppramser();
+		while(teller.hasNext()) {
+			((TabellMengde<T>)begge).settInn(teller.next());	
+
+		}
+		
 		return begge;
 	}//
 
@@ -154,6 +184,15 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	public MengdeADT<T> snitt(MengdeADT<T> m2) {
 		MengdeADT<T> snittM = new TabellMengde<T>();
 		T element = null;
+		Iterator<T> teller =m2.oppramser();
+		while(teller.hasNext()) {
+			element = teller.next();
+			if(this.inneholder(element)) {
+				((TabellMengde<T>)snittM).settInn(element);
+			}
+				
+			
+		}
 		/*
 		 * ...
 		 */
@@ -162,9 +201,40 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public MengdeADT<T> differens(MengdeADT<T> m2) {
-		//TODO
+		// TODO
 		MengdeADT<T> differensM = new TabellMengde<T>();
 		T element;
+		
+		for(int i = 0; (i < tab.length && i < this.antall());i++) {
+			if(tab[i] != null) {
+				((TabellMengde<T>)differensM).settInn(tab[i]);;
+			}
+		}
+		
+		
+		Iterator<T> teller = this.oppramser();
+		while(teller.hasNext()) {
+			element = teller.next();
+		if(!m2.inneholder(element)) {
+			((TabellMengde<T>)differensM).settInn(element);
+			
+		}
+		
+		}
+//		int i = 0;
+//		while(tab[i] != null && i < this.antall()) {
+//			((TabellMengde<T>)differensM).settInn(tab[i]);
+//			i++;
+//		}
+//		Iterator<T> teller = this.oppramser();
+//		while(teller.hasNext()) {
+//			element = teller.next();
+//			if(!m2.inneholder(element)) {
+//				((TabellMengde<T>)differensM).settInn(element);
+//			}
+//		}
+//		
+		
 		/*
 		 * Fyll ut
 		 * 
@@ -176,7 +246,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public boolean undermengde(MengdeADT<T> m2) {
-		//TODO
+		// TODO
 		boolean erUnderMengde = true;
 		// ...
 		return false;
